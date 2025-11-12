@@ -82,7 +82,10 @@ router.get('/sessions/:sessionId', async (req, res) => {
 });
 
 router.post('/generate-manual-from-video', upload.single('file'), async (req, res) => {
+  const startTime = Date.now();
+  
   if (!req.file) {
+    console.log('[Generation] Error: No video file selected');
     return res.status(400).json({
       error: '動画ファイルが選択されていません。',
     });
@@ -93,21 +96,44 @@ router.post('/generate-manual-from-video', upload.single('file'), async (req, re
   const imagesDir = path.join(exportDir, 'images');
   const videoPath = req.file.path;
 
+  console.log(`[Generation] Started: sessionId=${sessionId}, videoFile=${req.file.originalname}, size=${req.file.size} bytes`);
+
   try {
     await fs.mkdir(imagesDir, { recursive: true });
+    console.log(`[Generation] Directory created: ${imagesDir}`);
 
+    console.log(`[Generation] Frame extraction started: ${videoPath}`);
+    const frameExtractStartTime = Date.now();
     const frames = await extractFrames(videoPath, imagesDir);
+    const frameExtractDuration = Date.now() - frameExtractStartTime;
+    console.log(`[Generation] Frame extraction completed: ${frames.length} frames, duration=${frameExtractDuration}ms`);
+
+    console.log(`[Generation] Timestamp addition started: ${frames.length} frames`);
+    const timestampStartTime = Date.now();
     const imagesWithTimestamps = await addTimestamps(frames, imagesDir);
+    const timestampDuration = Date.now() - timestampStartTime;
+    console.log(`[Generation] Timestamp addition completed: ${imagesWithTimestamps.length} images, duration=${timestampDuration}ms`);
+
+    console.log(`[Generation] Markdown generation started: sending ${imagesWithTimestamps.length} images`);
+    const markdownStartTime = Date.now();
     const rawMarkdown = await generateMarkdown(imagesWithTimestamps);
+    const markdownDuration = Date.now() - markdownStartTime;
+    console.log(`[Generation] Markdown generation completed: ${rawMarkdown.length} characters, duration=${markdownDuration}ms`);
+
     const sanitized = removeMarkdownCodeBlockDelimiters(rawMarkdown);
     const markdown = rewriteRelativeImagePaths(sanitized, sessionId);
     
     const manualPath = path.join(exportDir, 'manual.md');
     await fs.writeFile(manualPath, markdown, 'utf-8');
+    console.log(`[Generation] Manual file saved: ${manualPath}`);
 
     const imageUrls = imagesWithTimestamps.map(img => `images/${img.filename}`);
 
     await fs.unlink(videoPath);
+    console.log(`[Generation] Temporary file deleted: ${videoPath}`);
+
+    const totalDuration = Date.now() - startTime;
+    console.log(`[Generation] Completed: sessionId=${sessionId}, totalDuration=${totalDuration}ms, imageCount=${imageUrls.length}`);
 
     res.json({
       markdown,
@@ -115,13 +141,19 @@ router.post('/generate-manual-from-video', upload.single('file'), async (req, re
       sessionId,
     });
   } catch (error) {
-    console.error('Error:', error);
+    const totalDuration = Date.now() - startTime;
+    console.error(`[Generation] Error occurred: sessionId=${sessionId}, duration=${totalDuration}ms`, error);
+    console.error(`[Generation] Error details:`, {
+      message: error.message,
+      stack: error.stack,
+    });
     
     try {
       await fs.rm(exportDir, { recursive: true, force: true });
       await fs.unlink(videoPath).catch(() => {});
+      console.log(`[Generation] Cleanup completed: ${exportDir}`);
     } catch (cleanupError) {
-      console.error('Cleanup error:', cleanupError);
+      console.error('[Generation] Cleanup error:', cleanupError);
     }
 
     res.status(500).json({

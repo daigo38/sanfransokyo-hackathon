@@ -15,17 +15,31 @@ export async function extractFrames(videoPath, outputDir) {
       ? String(fpsValue)
       : `${fpsValue}`;
     const filter = `fps=${fpsArg},scale=512:-1`;
+    
+    console.log(`[Frame Extraction] Configuration: video=${videoPath}, output=${outputDir}, interval=${intervalSeconds}s, FPS=${fpsArg}`);
+    
     ffmpeg(videoPath)
       .outputOptions([
         '-vf', filter,
         '-q:v', '3',
       ])
       .output(path.join(outputDir, 'frame-%05d.jpg'))
+      .on('start', (commandLine) => {
+        console.log(`[Frame Extraction] FFmpeg command execution started`);
+      })
+      .on('progress', (progress) => {
+        if (progress.percent) {
+          console.log(`[Frame Extraction] Progress: ${Math.round(progress.percent)}%`);
+        }
+      })
       .on('end', async () => {
+        console.log(`[Frame Extraction] FFmpeg processing completed`);
         const files = await fs.readdir(outputDir);
         const imageFiles = files
           .filter(f => f.startsWith('frame-') && f.endsWith('.jpg'))
           .sort();
+        
+        console.log(`[Frame Extraction] Extracted frames: ${imageFiles.length}`);
         
         const framesWithTimestamps = [];
         
@@ -44,9 +58,11 @@ export async function extractFrames(videoPath, outputDir) {
           });
         }
         
+        console.log(`[Frame Extraction] Rename completed: ${framesWithTimestamps.length} frames`);
         resolve(framesWithTimestamps);
       })
       .on('error', (err) => {
+        console.error(`[Frame Extraction] Error:`, err);
         reject(err);
       })
       .run();

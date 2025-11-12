@@ -6,8 +6,11 @@ import { TIMESTAMP_OVERLAY } from '../config/image.js';
 
 export async function addTimestamps(frames, imagesDir) {
   const processedFrames = [];
+  const totalFrames = frames.length;
+  console.log(`[Timestamp Addition] Started: processing ${totalFrames} frames`);
 
-  for (const frame of frames) {
+  for (let i = 0; i < frames.length; i++) {
+    const frame = frames[i];
     const imagePath = path.join(imagesDir, frame.filename);
     const imageBuffer = await fs.readFile(imagePath);
     
@@ -67,8 +70,13 @@ export async function addTimestamps(frames, imagesDir) {
       ...frame,
       imageBuffer: processedImage,
     });
+
+    if ((i + 1) % 10 === 0 || i + 1 === totalFrames) {
+      console.log(`[Timestamp Addition] Progress: ${i + 1}/${totalFrames} (${Math.round((i + 1) / totalFrames * 100)}%)`);
+    }
   }
 
+  console.log(`[Timestamp Addition] Completed: processed ${processedFrames.length} images`);
   return processedFrames;
 }
 
