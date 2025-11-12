@@ -24,7 +24,7 @@ class SessionSidebar {
     if (!list) return;
 
     if (this.sessions.length === 0) {
-      list.innerHTML = '<div class="session-empty">セッションがありません</div>';
+      list.innerHTML = '<div class="session-empty">No sessions</div>';
       return;
     }
 

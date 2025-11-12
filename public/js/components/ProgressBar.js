@@ -27,10 +27,10 @@ class ProgressBar {
     this.currentProgress = 0;
     
     const steps = [
-      { target: 20, text: '動画を解析しています...' },
-      { target: 45, text: 'フレームを抽出しています...' },
-      { target: 70, text: 'マニュアルを生成しています...' },
-      { target: 90, text: '仕上げ中...' }
+      { target: 20, text: 'Analyzing video...' },
+      { target: 45, text: 'Extracting frames...' },
+      { target: 70, text: 'Generating manual...' },
+      { target: 90, text: 'Finishing...' }
     ];
     
     let currentStep = 0;
@@ -66,7 +66,7 @@ class ProgressBar {
     }
     
     if (success) {
-      this.update(100, '完了しました！');
+      this.update(100, 'Complete!');
       setTimeout(() => {
         this.hide();
       }, 1500);

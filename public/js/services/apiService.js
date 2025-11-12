@@ -3,7 +3,7 @@ class ApiService {
     this.baseUrl = baseUrl;
   }
 
-  async convertVideo(file, language = '日本語') {
+  async convertVideo(file, language = 'English') {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('language', language);
@@ -15,7 +15,7 @@ class ApiService {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error || '変換に失敗しました。');
+      throw new Error(errorData.error || 'Conversion failed.');
     }
 
     return await response.json();
@@ -26,7 +26,7 @@ class ApiService {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error || 'セッション一覧の取得に失敗しました。');
+      throw new Error(errorData.error || 'Failed to retrieve session list.');
     }
 
     return await response.json();
@@ -37,7 +37,7 @@ class ApiService {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error || 'セッションの取得に失敗しました。');
+      throw new Error(errorData.error || 'Failed to retrieve session.');
     }
 
     return await response.json();

@@ -11,7 +11,7 @@ class UploadSection {
   }
 
   getLanguage() {
-    return this.languageSelect?.value || '日本語';
+    return this.languageSelect?.value || 'English';
   }
 
   hasFile() {
@@ -24,7 +24,7 @@ class UploadSection {
     }
     
     if (this.status) {
-      this.status.textContent = loading ? '' : '完了';
+      this.status.textContent = loading ? '' : 'Complete';
     }
   }
 

@@ -73,7 +73,7 @@ class PreviewSection {
 
     if (this.downloadBtn) {
       this.downloadBtn.disabled = true;
-      this.downloadBtn.textContent = 'PDFを生成中...';
+      this.downloadBtn.textContent = 'Generating PDF...';
     }
 
     try {
@@ -149,12 +149,12 @@ class PreviewSection {
       // スタイルを削除
       document.head.removeChild(style);
     } catch (error) {
-      console.error('PDF生成エラー:', error);
-      alert('PDFの生成に失敗しました。');
+      console.error('PDF generation error:', error);
+      alert('Failed to generate PDF.');
     } finally {
       if (this.downloadBtn) {
         this.downloadBtn.disabled = false;
-        this.downloadBtn.textContent = 'PDFをダウンロード';
+        this.downloadBtn.textContent = 'Download PDF';
       }
     }
   }

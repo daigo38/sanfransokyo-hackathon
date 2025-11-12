@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>動画からマニュアル生成</title>
+  <title>Video to Manual Generator</title>
   <link rel="stylesheet" href="/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
@@ -13,24 +13,24 @@
   <div class="app-layout">
     <div class="sidebar" id="sessionSidebar">
       <div class="sidebar-header">
-        <h2>セッション一覧</h2>
+        <h2>Session List</h2>
       </div>
       <div class="session-list"></div>
     </div>
 
     <div class="main-content">
       <div class="container">
-        <h1>動画からマニュアル生成</h1>
+        <h1>Video to Manual Generator</h1>
 
         <div class="upload-section">
           <div class="file-input-wrapper">
             <input type="file" id="videoInput" accept="video/*">
           </div>
           <div class="language-select-wrapper">
-            <label for="languageSelect">出力言語:</label>
+            <label for="languageSelect">Output Language:</label>
             <select id="languageSelect">
+              <option value="English" selected>English</option>
               <option value="日本語">日本語</option>
-              <option value="English">English</option>
               <option value="中文">中文</option>
               <option value="한국어">한국어</option>
               <option value="Español">Español</option>
@@ -44,7 +44,7 @@
             <div class="progress-bar-wrapper">
               <div class="progress-bar" id="progressBar">0%</div>
             </div>
-            <div class="progress-text" id="progressText">動画を解析しています...</div>
+            <div class="progress-text" id="progressText">Analyzing video...</div>
           </div>
           <div class="error" id="error"></div>
         </div>
@@ -52,7 +52,7 @@
         <div class="preview-section" id="previewSection">
           <div class="preview-container">
             <div class="preview-header">
-              <button id="downloadPdfBtn" class="download-btn">PDFをダウンロード</button>
+              <button id="downloadPdfBtn" class="download-btn">Download PDF</button>
             </div>
             <div class="thumbnails" id="thumbnails"></div>
             <div class="markdown-preview" id="markdownPreview"></div>
