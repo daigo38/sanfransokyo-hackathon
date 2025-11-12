@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🔧 作業マニュアル自動生成システム</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔧</text></svg>">
+  <title>ManualGen AI - 作業マニュアル自動生成</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⚡</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -15,8 +18,8 @@
   <div class="app-layout">
     <div class="sidebar" id="sessionSidebar">
       <div class="sidebar-header">
-        <i class="fas fa-folder-open"></i>
-        <h2>作業履歴</h2>
+        <i class="fas fa-history"></i>
+        <h2>History</h2>
       </div>
       <div class="session-list"></div>
     </div>
@@ -24,28 +27,19 @@
     <div class="main-content">
       <div class="container">
         <div class="header-section">
-          <div class="animated-icons">
-            <i class="fas fa-hammer icon-hammer"></i>
-            <i class="fas fa-cog icon-gear"></i>
-            <i class="fas fa-hard-hat icon-helmet"></i>
+          <div class="brand-icon">
+            <i class="fas fa-bolt"></i>
           </div>
-          <h1>
-            <i class="fas fa-tools"></i>
-            作業マニュアル自動生成システム
-            <i class="fas fa-wrench"></i>
-          </h1>
-          <p class="subtitle">動画をアップロードして、自動でわかりやすいマニュアルを作成</p>
+          <h1>ManualGen AI</h1>
+          <p class="subtitle">Transform your work videos into professional manuals with AI</p>
         </div>
 
         <div class="upload-section">
           <div class="upload-card">
-            <div class="card-icon">
-              <i class="fas fa-video"></i>
-            </div>
             <div class="file-input-wrapper">
               <label for="videoInput" class="file-label">
-                <i class="fas fa-upload"></i>
-                <span>作業動画を選択</span>
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Drop your video here or click to browse</span>
               </label>
               <input type="file" id="videoInput" accept="video/*">
               <div id="fileName" class="file-name"></div>
@@ -53,48 +47,35 @@
           </div>
           
           <div class="language-card">
-            <div class="card-icon">
-              <i class="fas fa-language"></i>
-            </div>
             <div class="language-select-wrapper">
-              <label for="languageSelect">
-                <i class="fas fa-globe"></i>
-                出力言語:
-              </label>
+              <label for="languageSelect">Output Language</label>
               <select id="languageSelect">
-                <option value="日本語" selected>日本語</option>
+                <option value="日本語" selected>日本語 Japanese</option>
                 <option value="English">English</option>
-                <option value="中文">中文</option>
-                <option value="한국어">한국어</option>
-                <option value="Español">Español</option>
-                <option value="Français">Français</option>
-                <option value="Deutsch">Deutsch</option>
+                <option value="中文">中文 Chinese</option>
+                <option value="한국어">한국어 Korean</option>
+                <option value="Español">Español Spanish</option>
+                <option value="Français">Français French</option>
+                <option value="Deutsch">Deutsch German</option>
               </select>
             </div>
           </div>
 
           <button id="submitBtn" class="submit-btn">
-            <i class="fas fa-cog icon-spin"></i>
-            <span>マニュアル生成開始</span>
-            <i class="fas fa-arrow-right"></i>
+            <span>Generate Manual</span>
+            <i class="fas fa-sparkles"></i>
           </button>
           
           <div class="status" id="status"></div>
           <div class="progress-container" id="progressContainer">
             <div class="progress-header">
-              <i class="fas fa-hard-hat"></i>
-              <span>作業中...</span>
+              <span>Processing</span>
+              <span class="progress-percentage" id="progressPercentage">0%</span>
             </div>
             <div class="progress-bar-wrapper">
-              <div class="progress-bar" id="progressBar">
-                <div class="progress-bar-stripes"></div>
-                <span class="progress-percentage">0%</span>
-              </div>
+              <div class="progress-bar" id="progressBar"></div>
             </div>
-            <div class="progress-text" id="progressText">
-              <i class="fas fa-cog fa-spin"></i>
-              動画を解析しています...
-            </div>
+            <div class="progress-text" id="progressText">Analyzing video...</div>
           </div>
           <div class="error" id="error"></div>
         </div>
@@ -102,15 +83,13 @@
         <div class="preview-section" id="previewSection">
           <div class="completion-banner">
             <i class="fas fa-check-circle"></i>
-            <span>マニュアル生成完了！</span>
-            <i class="fas fa-check-circle"></i>
+            <span>Manual Generated Successfully</span>
           </div>
           <div class="preview-container">
             <div class="preview-header">
               <button id="downloadPdfBtn" class="download-btn">
-                <i class="fas fa-file-pdf"></i>
-                PDFダウンロード
                 <i class="fas fa-download"></i>
+                Download PDF
               </button>
             </div>
             <div class="thumbnails" id="thumbnails"></div>

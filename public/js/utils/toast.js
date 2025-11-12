@@ -6,7 +6,7 @@ class Toast {
   show(message, duration = 3000) {
     if (!this.element) return;
     
-    this.element.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    this.element.innerHTML = `<i class="fas fa-check-circle"></i>${message}`;
     this.element.classList.add('show');
     
     setTimeout(() => {

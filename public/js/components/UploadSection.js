@@ -18,7 +18,7 @@ class UploadSection {
   handleFileChange() {
     const file = this.getFile();
     if (file && this.fileNameDisplay) {
-      this.fileNameDisplay.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success-green);"></i> ${file.name}`;
+      this.fileNameDisplay.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success-green); margin-right: 8px;"></i>${file.name}`;
     }
   }
 
@@ -38,14 +38,14 @@ class UploadSection {
     if (this.submitBtn) {
       this.submitBtn.disabled = loading;
       if (loading) {
-        this.submitBtn.innerHTML = '<i class="fas fa-cog fa-spin"></i><span>処理中...</span>';
+        this.submitBtn.innerHTML = '<span>Processing...</span>';
       } else {
-        this.submitBtn.innerHTML = '<i class="fas fa-cog icon-spin"></i><span>マニュアル生成開始</span><i class="fas fa-arrow-right"></i>';
+        this.submitBtn.innerHTML = '<span>Generate Manual</span><i class="fas fa-sparkles"></i>';
       }
     }
     
     if (this.status) {
-      this.status.textContent = loading ? '' : '完了';
+      this.status.textContent = loading ? '' : 'Complete';
     }
   }
 

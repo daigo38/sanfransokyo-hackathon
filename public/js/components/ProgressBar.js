@@ -10,14 +10,15 @@ class ProgressBar {
   update(percent, message) {
     if (this.bar) {
       this.bar.style.width = percent + '%';
-      const percentageElement = this.bar.querySelector('.progress-percentage');
-      if (percentageElement) {
-        percentageElement.textContent = Math.floor(percent) + '%';
-      }
+    }
+    
+    const percentageElement = document.getElementById('progressPercentage');
+    if (percentageElement) {
+      percentageElement.textContent = Math.floor(percent) + '%';
     }
     
     if (message && this.text) {
-      this.text.innerHTML = `<i class="fas fa-cog fa-spin"></i> ${message}`;
+      this.text.textContent = message;
     }
     
     this.currentProgress = percent;
@@ -30,10 +31,10 @@ class ProgressBar {
     this.currentProgress = 0;
     
     const steps = [
-      { target: 20, text: '動画を解析しています...' },
-      { target: 45, text: 'フレームを抽出しています...' },
-      { target: 70, text: 'マニュアルを生成しています...' },
-      { target: 90, text: '最終処理中...' }
+      { target: 20, text: 'Analyzing video...' },
+      { target: 45, text: 'Extracting frames...' },
+      { target: 70, text: 'Generating manual...' },
+      { target: 90, text: 'Finalizing...' }
     ];
     
     let currentStep = 0;
@@ -69,7 +70,7 @@ class ProgressBar {
     }
     
     if (success) {
-      this.update(100, '完了！');
+      this.update(100, 'Complete!');
       setTimeout(() => {
         this.hide();
       }, 1500);
