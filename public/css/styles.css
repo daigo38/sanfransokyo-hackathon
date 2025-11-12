@@ -319,3 +319,50 @@ button:disabled {
   margin-bottom: 10px;
 }
 
+/* PDF生成時の改ページ制御 */
+.markdown-preview p,
+.markdown-preview li,
+.markdown-preview img,
+.markdown-preview pre,
+.markdown-preview code,
+.markdown-preview blockquote {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.markdown-preview h1,
+.markdown-preview h2,
+.markdown-preview h3,
+.markdown-preview h4,
+.markdown-preview h5,
+.markdown-preview h6 {
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+.markdown-preview h1 + *,
+.markdown-preview h2 + *,
+.markdown-preview h3 + *,
+.markdown-preview h4 + *,
+.markdown-preview h5 + *,
+.markdown-preview h6 + * {
+  page-break-before: avoid;
+  break-before: avoid;
+}
+
+.markdown-preview ul,
+.markdown-preview ol {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.markdown-preview table {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.markdown-preview table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+

@@ -78,15 +78,76 @@ class PreviewSection {
 
     try {
       const element = this.markdownPreview;
+      
+      // 改ページ制御のためのスタイルを適用
+      const style = document.createElement('style');
+      style.textContent = `
+        .markdown-preview p,
+        .markdown-preview li,
+        .markdown-preview img,
+        .markdown-preview pre,
+        .markdown-preview code,
+        .markdown-preview blockquote {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+        }
+        .markdown-preview h1,
+        .markdown-preview h2,
+        .markdown-preview h3,
+        .markdown-preview h4,
+        .markdown-preview h5,
+        .markdown-preview h6 {
+          page-break-after: avoid !important;
+          break-after: avoid !important;
+        }
+        .markdown-preview h1 + *,
+        .markdown-preview h2 + *,
+        .markdown-preview h3 + *,
+        .markdown-preview h4 + *,
+        .markdown-preview h5 + *,
+        .markdown-preview h6 + * {
+          page-break-before: avoid !important;
+          break-before: avoid !important;
+        }
+        .markdown-preview ul,
+        .markdown-preview ol {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+        }
+        .markdown-preview table {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+        }
+        .markdown-preview table tr {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+        }
+      `;
+      document.head.appendChild(style);
+
       const opt = {
         margin: [10, 10, 10, 10],
         filename: 'manual.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        html2canvas: { 
+          scale: 2, 
+          useCORS: true,
+          logging: false
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait'
+        },
+        pagebreak: { 
+          mode: ['avoid-all', 'css', 'legacy']
+        }
       };
 
       await html2pdf().set(opt).from(element).save();
+      
+      // スタイルを削除
+      document.head.removeChild(style);
     } catch (error) {
       console.error('PDF生成エラー:', error);
       alert('PDFの生成に失敗しました。');
