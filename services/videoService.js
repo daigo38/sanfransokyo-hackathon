@@ -2,6 +2,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import ffmpegStatic from 'ffmpeg-static';
 import fs from 'fs/promises';
 import path from 'path';
+import { formatTimestampForFilename } from '../utils/timestamp.js';
 
 ffmpeg.setFfmpegPath(ffmpegStatic);
 
@@ -19,10 +20,22 @@ export async function extractFrames(videoPath, outputDir) {
           .filter(f => f.startsWith('frame-') && f.endsWith('.jpg'))
           .sort();
         
-        const framesWithTimestamps = imageFiles.map((filename, index) => ({
-          filename,
-          timestamp: index,
-        }));
+        const framesWithTimestamps = [];
+        
+        for (let index = 0; index < imageFiles.length; index++) {
+          const oldFilename = imageFiles[index];
+          const timestamp = index;
+          const newFilename = `${formatTimestampForFilename(timestamp)}.jpg`;
+          const oldPath = path.join(outputDir, oldFilename);
+          const newPath = path.join(outputDir, newFilename);
+          
+          await fs.rename(oldPath, newPath);
+          
+          framesWithTimestamps.push({
+            filename: newFilename,
+            timestamp,
+          });
+        }
         
         resolve(framesWithTimestamps);
       })

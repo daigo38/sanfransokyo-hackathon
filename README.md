@@ -107,10 +107,11 @@ npm run dev
 ```
 export/{sessionId}/
 ├── images/
-│   ├── frame-00001.jpg    # タイムスタンプ焼き込み済み
-│   ├── frame-00002.jpg
+│   ├── 00-00.jpg    # タイムスタンプ焼き込み済み（00:00）
+│   ├── 00-01.jpg    # タイムスタンプ焼き込み済み（00:01）
+│   ├── 00-15.jpg    # タイムスタンプ焼き込み済み（00:15）
 │   └── ...
-└── manual.md              # Markdownマニュアル
+└── manual.md        # Markdownマニュアル
 ```
 
 ### 画像仕様
@@ -118,6 +119,7 @@ export/{sessionId}/
 - **解像度**: 幅512px（アスペクト比維持）
 - **フレームレート**: 1fps
 - **フォーマット**: JPEG
+- **ファイル名**: mm-ss形式（例：`00-15.jpg`）
 - **タイムスタンプ**: 左下、白文字＋黒縁、MM:SS形式
 
 ### Markdown仕様
@@ -125,7 +127,7 @@ export/{sessionId}/
 - ステップ見出し（Step 1, Step 2, ...）
 - 各ステップに1-2枚の代表画像を埋め込み
 - 各ステップの開始〜終了時刻を記載
-- 画像は相対パスで参照（`images/frame-00001.jpg`）
+- 画像は相対パスで参照（`images/00-15.jpg`、`images/00-30.jpg`など、ファイル名はmm-ss形式）
 
 ## API
 
@@ -141,7 +143,7 @@ export/{sessionId}/
 ```json
 {
   "markdown": "生成されたMarkdownテキスト",
-  "images": ["images/frame-00001.jpg", "images/frame-00002.jpg", ...],
+  "images": ["images/00-00.jpg", "images/00-01.jpg", ...],
   "sessionId": "セッションID"
 }
 ```
