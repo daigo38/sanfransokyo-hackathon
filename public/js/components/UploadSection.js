@@ -1,12 +1,17 @@
 class UploadSection {
-  constructor(fileInputId, submitBtnId, statusId) {
+  constructor(fileInputId, submitBtnId, statusId, languageSelectId = 'languageSelect') {
     this.fileInput = document.getElementById(fileInputId);
     this.submitBtn = document.getElementById(submitBtnId);
     this.status = document.getElementById(statusId);
+    this.languageSelect = document.getElementById(languageSelectId);
   }
 
   getFile() {
     return this.fileInput?.files[0] || null;
+  }
+
+  getLanguage() {
+    return this.languageSelect?.value || '日本語';
   }
 
   hasFile() {

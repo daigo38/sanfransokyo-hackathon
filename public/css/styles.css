@@ -116,6 +116,39 @@ input[type="file"] {
   max-width: 400px;
 }
 
+.language-select-wrapper {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-select-wrapper label {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.language-select-wrapper select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.language-select-wrapper select:hover {
+  border-color: #007bff;
+}
+
+.language-select-wrapper select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
 button {
   background: #007bff;
   color: white;

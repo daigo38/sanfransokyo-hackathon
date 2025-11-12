@@ -1,7 +1,7 @@
 import { openai } from '../config/openai.js';
 import { MANUAL_GENERATION_PROMPT } from '../prompts/manualGeneration.js';
 
-export async function generateMarkdown(frames) {
+export async function generateMarkdown(frames, language = '日本語') {
   console.log(`[Markdown Generation] Image encoding started: ${frames.length} images`);
   const encodeStartTime = Date.now();
   
@@ -20,20 +20,22 @@ export async function generateMarkdown(frames) {
   const encodeDuration = Date.now() - encodeStartTime;
   console.log(`[Markdown Generation] Image encoding completed: duration=${encodeDuration}ms`);
 
+  const prompt = MANUAL_GENERATION_PROMPT.replace('{language}', language);
+
   const messages = [
     {
       role: 'user',
       content: [
         {
           type: 'text',
-          text: MANUAL_GENERATION_PROMPT,
+          text: prompt,
         },
         ...imageContents,
       ],
     },
   ];
 
-  console.log(`[Markdown Generation] OpenAI API call started: model=gpt-4o, imageCount=${imageContents.length}, promptLength=${MANUAL_GENERATION_PROMPT.length} characters`);
+  console.log(`[Markdown Generation] OpenAI API call started: model=gpt-4o, imageCount=${imageContents.length}, promptLength=${prompt.length} characters, language=${language}`);
   const apiStartTime = Date.now();
 
   try {

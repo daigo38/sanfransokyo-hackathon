@@ -29,9 +29,10 @@ class App {
 
     try {
       const file = this.uploadSection.getFile();
+      const language = this.uploadSection.getLanguage();
       this.progressBar.start();
 
-      const data = await this.apiService.convertVideo(file);
+      const data = await this.apiService.convertVideo(file, language);
 
       this.progressBar.stop(true);
       this.handleSuccess(data);

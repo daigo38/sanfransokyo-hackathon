@@ -3,9 +3,10 @@ class ApiService {
     this.baseUrl = baseUrl;
   }
 
-  async convertVideo(file) {
+  async convertVideo(file, language = '日本語') {
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('language', language);
 
     const response = await fetch(`${this.baseUrl}/api/generate-manual-from-video`, {
       method: 'POST',

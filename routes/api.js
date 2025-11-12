@@ -91,12 +91,13 @@ router.post('/generate-manual-from-video', upload.single('file'), async (req, re
     });
   }
 
+  const language = req.body.language || '日本語';
   const sessionId = uuidv4();
   const exportDir = path.join(__dirname, '..', 'export', sessionId);
   const imagesDir = path.join(exportDir, 'images');
   const videoPath = req.file.path;
 
-  console.log(`[Generation] Started: sessionId=${sessionId}, videoFile=${req.file.originalname}, size=${req.file.size} bytes`);
+  console.log(`[Generation] Started: sessionId=${sessionId}, videoFile=${req.file.originalname}, size=${req.file.size} bytes, language=${language}`);
 
   try {
     await fs.mkdir(imagesDir, { recursive: true });
@@ -114,9 +115,9 @@ router.post('/generate-manual-from-video', upload.single('file'), async (req, re
     const timestampDuration = Date.now() - timestampStartTime;
     console.log(`[Generation] Timestamp addition completed: ${imagesWithTimestamps.length} images, duration=${timestampDuration}ms`);
 
-    console.log(`[Generation] Markdown generation started: sending ${imagesWithTimestamps.length} images`);
+    console.log(`[Generation] Markdown generation started: sending ${imagesWithTimestamps.length} images, language=${language}`);
     const markdownStartTime = Date.now();
-    const rawMarkdown = await generateMarkdown(imagesWithTimestamps);
+    const rawMarkdown = await generateMarkdown(imagesWithTimestamps, language);
     const markdownDuration = Date.now() - markdownStartTime;
     console.log(`[Generation] Markdown generation completed: ${rawMarkdown.length} characters, duration=${markdownDuration}ms`);
 
