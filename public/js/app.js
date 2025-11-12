@@ -21,7 +21,7 @@ class App {
 
   async handleSubmit() {
     if (!this.uploadSection.hasFile()) {
-      this.errorHandler.show('Please select a video file.');
+      this.errorHandler.show('動画ファイルを選択してください。');
       return;
     }
 
@@ -53,12 +53,12 @@ class App {
     this.uploadSection.setLoading(false);
     this.previewSection.render(data);
     this.sessionSidebar.refresh();
-    this.toast.show(`Saved: export/${data.sessionId}/`);
+    this.toast.show(`保存完了: export/${data.sessionId}/`);
   }
 
   handleError(err) {
     this.uploadSection.setLoading(false);
-    const errorMessage = err.message || 'Conversion failed. Please try again with a shorter video.';
+    const errorMessage = err.message || '変換に失敗しました。短めの動画で再試行してください。';
     this.errorHandler.show(errorMessage);
   }
 }

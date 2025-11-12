@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video to Manual Generator</title>
+  <title>🔧 作業マニュアル自動生成システム</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔧</text></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
@@ -13,46 +15,103 @@
   <div class="app-layout">
     <div class="sidebar" id="sessionSidebar">
       <div class="sidebar-header">
-        <h2>Session List</h2>
+        <i class="fas fa-folder-open"></i>
+        <h2>作業履歴</h2>
       </div>
       <div class="session-list"></div>
     </div>
 
     <div class="main-content">
       <div class="container">
-        <h1>Video to Manual Generator</h1>
+        <div class="header-section">
+          <div class="animated-icons">
+            <i class="fas fa-hammer icon-hammer"></i>
+            <i class="fas fa-cog icon-gear"></i>
+            <i class="fas fa-hard-hat icon-helmet"></i>
+          </div>
+          <h1>
+            <i class="fas fa-tools"></i>
+            作業マニュアル自動生成システム
+            <i class="fas fa-wrench"></i>
+          </h1>
+          <p class="subtitle">動画をアップロードして、自動でわかりやすいマニュアルを作成</p>
+        </div>
 
         <div class="upload-section">
-          <div class="file-input-wrapper">
-            <input type="file" id="videoInput" accept="video/*">
+          <div class="upload-card">
+            <div class="card-icon">
+              <i class="fas fa-video"></i>
+            </div>
+            <div class="file-input-wrapper">
+              <label for="videoInput" class="file-label">
+                <i class="fas fa-upload"></i>
+                <span>作業動画を選択</span>
+              </label>
+              <input type="file" id="videoInput" accept="video/*">
+              <div id="fileName" class="file-name"></div>
+            </div>
           </div>
-          <div class="language-select-wrapper">
-            <label for="languageSelect">Output Language:</label>
-            <select id="languageSelect">
-              <option value="English" selected>English</option>
-              <option value="日本語">日本語</option>
-              <option value="中文">中文</option>
-              <option value="한국어">한국어</option>
-              <option value="Español">Español</option>
-              <option value="Français">Français</option>
-              <option value="Deutsch">Deutsch</option>
-            </select>
+          
+          <div class="language-card">
+            <div class="card-icon">
+              <i class="fas fa-language"></i>
+            </div>
+            <div class="language-select-wrapper">
+              <label for="languageSelect">
+                <i class="fas fa-globe"></i>
+                出力言語:
+              </label>
+              <select id="languageSelect">
+                <option value="日本語" selected>日本語</option>
+                <option value="English">English</option>
+                <option value="中文">中文</option>
+                <option value="한국어">한국어</option>
+                <option value="Español">Español</option>
+                <option value="Français">Français</option>
+                <option value="Deutsch">Deutsch</option>
+              </select>
+            </div>
           </div>
-          <button id="submitBtn">Submit</button>
+
+          <button id="submitBtn" class="submit-btn">
+            <i class="fas fa-cog icon-spin"></i>
+            <span>マニュアル生成開始</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+          
           <div class="status" id="status"></div>
           <div class="progress-container" id="progressContainer">
-            <div class="progress-bar-wrapper">
-              <div class="progress-bar" id="progressBar">0%</div>
+            <div class="progress-header">
+              <i class="fas fa-hard-hat"></i>
+              <span>作業中...</span>
             </div>
-            <div class="progress-text" id="progressText">Analyzing video...</div>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar" id="progressBar">
+                <div class="progress-bar-stripes"></div>
+                <span class="progress-percentage">0%</span>
+              </div>
+            </div>
+            <div class="progress-text" id="progressText">
+              <i class="fas fa-cog fa-spin"></i>
+              動画を解析しています...
+            </div>
           </div>
           <div class="error" id="error"></div>
         </div>
 
         <div class="preview-section" id="previewSection">
+          <div class="completion-banner">
+            <i class="fas fa-check-circle"></i>
+            <span>マニュアル生成完了！</span>
+            <i class="fas fa-check-circle"></i>
+          </div>
           <div class="preview-container">
             <div class="preview-header">
-              <button id="downloadPdfBtn" class="download-btn">Download PDF</button>
+              <button id="downloadPdfBtn" class="download-btn">
+                <i class="fas fa-file-pdf"></i>
+                PDFダウンロード
+                <i class="fas fa-download"></i>
+              </button>
             </div>
             <div class="thumbnails" id="thumbnails"></div>
             <div class="markdown-preview" id="markdownPreview"></div>

@@ -24,7 +24,7 @@ class SessionSidebar {
     if (!list) return;
 
     if (this.sessions.length === 0) {
-      list.innerHTML = '<div class="session-empty">No sessions</div>';
+      list.innerHTML = '<div class="session-empty"><i class="fas fa-inbox"></i><br>まだ履歴がありません</div>';
       return;
     }
 
@@ -33,7 +33,7 @@ class SessionSidebar {
         (session) => `
       <div class="session-item ${session.sessionId === this.currentSessionId ? 'active' : ''}" 
            data-session-id="${session.sessionId}">
-        <div class="session-id">${session.sessionId}</div>
+        <div class="session-id"><i class="fas fa-file-alt"></i> ${session.sessionId}</div>
       </div>
     `
       )

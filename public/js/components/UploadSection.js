@@ -4,6 +4,22 @@ class UploadSection {
     this.submitBtn = document.getElementById(submitBtnId);
     this.status = document.getElementById(statusId);
     this.languageSelect = document.getElementById(languageSelectId);
+    this.fileNameDisplay = document.getElementById('fileName');
+    
+    this.initEventListeners();
+  }
+
+  initEventListeners() {
+    if (this.fileInput) {
+      this.fileInput.addEventListener('change', () => this.handleFileChange());
+    }
+  }
+
+  handleFileChange() {
+    const file = this.getFile();
+    if (file && this.fileNameDisplay) {
+      this.fileNameDisplay.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success-green);"></i> ${file.name}`;
+    }
   }
 
   getFile() {
@@ -11,7 +27,7 @@ class UploadSection {
   }
 
   getLanguage() {
-    return this.languageSelect?.value || 'English';
+    return this.languageSelect?.value || '日本語';
   }
 
   hasFile() {
@@ -21,10 +37,15 @@ class UploadSection {
   setLoading(loading) {
     if (this.submitBtn) {
       this.submitBtn.disabled = loading;
+      if (loading) {
+        this.submitBtn.innerHTML = '<i class="fas fa-cog fa-spin"></i><span>処理中...</span>';
+      } else {
+        this.submitBtn.innerHTML = '<i class="fas fa-cog icon-spin"></i><span>マニュアル生成開始</span><i class="fas fa-arrow-right"></i>';
+      }
     }
     
     if (this.status) {
-      this.status.textContent = loading ? '' : 'Complete';
+      this.status.textContent = loading ? '' : '完了';
     }
   }
 
