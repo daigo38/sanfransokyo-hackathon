@@ -36,10 +36,10 @@ export function removeMarkdownCodeBlockDelimiters(text) {
 }
 
 /**
- * Markdown内の相対画像パス（images/..）をセッション固有の絶対パスに書き換える
- * - 画像記法: ![alt](images/xx.jpg) → ![alt](/export/{sessionId}/images/xx.jpg)
- * - HTML記法: <img src="images/xx.jpg"> → <img src="/export/{sessionId}/images/xx.jpg">
- * - 通常リンク: [text](images/xx.jpg) も同様に書き換え
+ * Markdown内の相対画像パスをセッション固有の絶対パスに書き換える
+ * - 画像記法: ![alt](./mm-ss.jpg) または ![alt](mm-ss.jpg) → ![alt](/export/{sessionId}/images/mm-ss.jpg)
+ * - HTML記法: <img src="./mm-ss.jpg"> → <img src="/export/{sessionId}/images/mm-ss.jpg">
+ * - mm-ss形式（例: 00-00.jpg）の画像パスを全て置換
  * @param {string} markdown - 変換対象のMarkdown文字列
  * @param {string} sessionId - セッションID
  * @returns {string} - 変換後のMarkdown
@@ -49,21 +49,21 @@ export function rewriteRelativeImagePaths(markdown, sessionId) {
     return markdown;
   }
 
-  // images/ で始まる相対パスを /export/{sessionId}/ でプレフィックス
-  const exportPrefix = `/export/${sessionId}/`;
+  const exportPrefix = `/export/${sessionId}/images/`;
 
   let result = markdown;
 
-  // Markdown画像・リンク: ![...](images/...) および [...](images/...)
+  // Markdown画像・リンク: ![...](./mm-ss.jpg) または ![...](mm-ss.jpg) の形式を検出
+  // mm-ss形式: 2桁-2桁のパターン（例: 00-00.jpg）
   result = result.replace(
-    /(!?\[[^\]]*\]\()(images\/[^)]+)(\))/g,
-    (_m, p1, rel, p3) => `${p1}${exportPrefix}${rel}${p3}`
+    /(!?\[[^\]]*\]\()(\.?\/?)(\d{2}-\d{2}\.[a-zA-Z]+)(\))/g,
+    (_m, p1, p2, filename, p4) => `${p1}${exportPrefix}${filename}${p4}`
   );
 
-  // HTML imgタグ
+  // HTML imgタグ: <img src="./mm-ss.jpg"> または <img src="mm-ss.jpg"> の形式を検出
   result = result.replace(
-    /(<img\b[^>]*\bsrc=["'])(images\/[^"']+)(["'][^>]*>)/gi,
-    (_m, p1, rel, p3) => `${p1}${exportPrefix}${rel}${p3}`
+    /(<img\b[^>]*\bsrc=["'])(\.?\/?)(\d{2}-\d{2}\.[a-zA-Z]+)(["'][^>]*>)/gi,
+    (_m, p1, p2, filename, p4) => `${p1}${exportPrefix}${filename}${p4}`
   );
 
   return result;
