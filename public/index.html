@@ -10,31 +10,42 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>動画からマニュアル生成</h1>
-
-    <div class="upload-section">
-      <div class="file-input-wrapper">
-        <input type="file" id="videoInput" accept="video/*">
+  <div class="app-layout">
+    <div class="sidebar" id="sessionSidebar">
+      <div class="sidebar-header">
+        <h2>セッション一覧</h2>
       </div>
-      <button id="submitBtn">Submit</button>
-      <div class="status" id="status"></div>
-      <div class="progress-container" id="progressContainer">
-        <div class="progress-bar-wrapper">
-          <div class="progress-bar" id="progressBar">0%</div>
-        </div>
-        <div class="progress-text" id="progressText">動画を解析しています...</div>
-      </div>
-      <div class="error" id="error"></div>
+      <div class="session-list"></div>
     </div>
 
-    <div class="preview-section" id="previewSection">
-      <div class="preview-container">
-        <div class="preview-header">
-          <button id="downloadPdfBtn" class="download-btn">PDFをダウンロード</button>
+    <div class="main-content">
+      <div class="container">
+        <h1>動画からマニュアル生成</h1>
+
+        <div class="upload-section">
+          <div class="file-input-wrapper">
+            <input type="file" id="videoInput" accept="video/*">
+          </div>
+          <button id="submitBtn">Submit</button>
+          <div class="status" id="status"></div>
+          <div class="progress-container" id="progressContainer">
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            <div class="progress-text" id="progressText">動画を解析しています...</div>
+          </div>
+          <div class="error" id="error"></div>
         </div>
-        <div class="thumbnails" id="thumbnails"></div>
-        <div class="markdown-preview" id="markdownPreview"></div>
+
+        <div class="preview-section" id="previewSection">
+          <div class="preview-container">
+            <div class="preview-header">
+              <button id="downloadPdfBtn" class="download-btn">PDFをダウンロード</button>
+            </div>
+            <div class="thumbnails" id="thumbnails"></div>
+            <div class="markdown-preview" id="markdownPreview"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -46,6 +57,7 @@
   <script src="/js/components/ProgressBar.js"></script>
   <script src="/js/components/PreviewSection.js"></script>
   <script src="/js/components/UploadSection.js"></script>
+  <script src="/js/components/SessionSidebar.js"></script>
   <script src="/js/services/apiService.js"></script>
   <script src="/js/app.js"></script>
 </body>

@@ -6,8 +6,10 @@ class App {
     this.errorHandler = new ErrorHandler('error');
     this.toast = new Toast('toast');
     this.apiService = new ApiService();
+    this.sessionSidebar = new SessionSidebar('sessionSidebar', this.apiService, this.previewSection);
     
     this.initializeEventListeners();
+    this.sessionSidebar.loadSessions();
   }
 
   initializeEventListeners() {
@@ -49,6 +51,7 @@ class App {
   handleSuccess(data) {
     this.uploadSection.setLoading(false);
     this.previewSection.render(data);
+    this.sessionSidebar.refresh();
     this.toast.show(`保存済み: export/${data.sessionId}/`);
   }
 
