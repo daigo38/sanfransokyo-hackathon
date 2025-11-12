@@ -35,3 +35,37 @@ export function removeMarkdownCodeBlockDelimiters(text) {
   return processed.trim();
 }
 
+/**
+ * Markdown内の相対画像パス（images/..）をセッション固有の絶対パスに書き換える
+ * - 画像記法: ![alt](images/xx.jpg) → ![alt](/export/{sessionId}/images/xx.jpg)
+ * - HTML記法: <img src="images/xx.jpg"> → <img src="/export/{sessionId}/images/xx.jpg">
+ * - 通常リンク: [text](images/xx.jpg) も同様に書き換え
+ * @param {string} markdown - 変換対象のMarkdown文字列
+ * @param {string} sessionId - セッションID
+ * @returns {string} - 変換後のMarkdown
+ */
+export function rewriteRelativeImagePaths(markdown, sessionId) {
+  if (!markdown || typeof markdown !== 'string' || !sessionId) {
+    return markdown;
+  }
+
+  // images/ で始まる相対パスを /export/{sessionId}/ でプレフィックス
+  const exportPrefix = `/export/${sessionId}/`;
+
+  let result = markdown;
+
+  // Markdown画像・リンク: ![...](images/...) および [...](images/...)
+  result = result.replace(
+    /(!?\[[^\]]*\]\()(images\/[^)]+)(\))/g,
+    (_m, p1, rel, p3) => `${p1}${exportPrefix}${rel}${p3}`
+  );
+
+  // HTML imgタグ
+  result = result.replace(
+    /(<img\b[^>]*\bsrc=["'])(images\/[^"']+)(["'][^>]*>)/gi,
+    (_m, p1, rel, p3) => `${p1}${exportPrefix}${rel}${p3}`
+  );
+
+  return result;
+}
+
