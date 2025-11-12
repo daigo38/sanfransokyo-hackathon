@@ -8,6 +8,7 @@ import { dirname } from 'path';
 import { extractFrames } from '../services/videoService.js';
 import { addTimestamps } from '../services/imageService.js';
 import { generateMarkdown } from '../services/openaiService.js';
+import { removeMarkdownCodeBlockDelimiters } from '../utils/textSanitizer.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -32,7 +33,8 @@ router.post('/convert', upload.single('file'), async (req, res) => {
 
     const frames = await extractFrames(videoPath, imagesDir);
     const imagesWithTimestamps = await addTimestamps(frames, imagesDir);
-    const markdown = await generateMarkdown(imagesWithTimestamps);
+    const rawMarkdown = await generateMarkdown(imagesWithTimestamps);
+    const markdown = removeMarkdownCodeBlockDelimiters(rawMarkdown);
     
     const manualPath = path.join(exportDir, 'manual.md');
     await fs.writeFile(manualPath, markdown, 'utf-8');
