@@ -2,7 +2,7 @@ class App {
   constructor() {
     this.uploadSection = new UploadSection('videoInput', 'submitBtn', 'status');
     this.progressBar = new ProgressBar('progressContainer', 'progressBar', 'progressText');
-    this.previewSection = new PreviewSection('previewSection', 'thumbnails', 'markdownPreview');
+    this.previewSection = new PreviewSection('previewSection', 'thumbnails', 'markdownPreview', 'downloadPdfBtn');
     this.errorHandler = new ErrorHandler('error');
     this.toast = new Toast('toast');
     this.apiService = new ApiService();
