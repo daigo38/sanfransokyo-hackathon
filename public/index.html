@@ -78,6 +78,44 @@
       font-size: 14px;
     }
 
+    .progress-container {
+      margin-top: 15px;
+      display: none;
+    }
+
+    .progress-container.show {
+      display: block;
+    }
+
+    .progress-bar-wrapper {
+      width: 100%;
+      height: 24px;
+      background: #e9ecef;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #007bff, #0056b3);
+      width: 0%;
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .progress-text {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #666;
+      text-align: center;
+    }
+
     .error {
       margin-top: 15px;
       color: #dc3545;
@@ -206,6 +244,12 @@
       </div>
       <button id="submitBtn" onclick="handleSubmit()">Submit</button>
       <div class="status" id="status"></div>
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar-wrapper">
+          <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+        <div class="progress-text" id="progressText">動画を解析しています...</div>
+      </div>
       <div class="error" id="error"></div>
     </div>
 
@@ -220,6 +264,75 @@
   <div class="toast" id="toast"></div>
 
   <script>
+    let progressInterval = null;
+
+    function updateProgress(percent, text) {
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      
+      progressBar.style.width = percent + '%';
+      progressBar.textContent = Math.floor(percent) + '%';
+      if (text) {
+        progressText.textContent = text;
+      }
+    }
+
+    function startFakeProgress() {
+      const progressContainer = document.getElementById('progressContainer');
+      progressContainer.classList.add('show');
+      
+      let progress = 0;
+      const steps = [
+        { target: 20, duration: 1000, text: '動画を解析しています...' },
+        { target: 45, duration: 2000, text: 'フレームを抽出しています...' },
+        { target: 70, duration: 3000, text: 'マニュアルを生成しています...' },
+        { target: 90, duration: 4000, text: '仕上げ中...' }
+      ];
+      
+      let currentStep = 0;
+      
+      progressInterval = setInterval(() => {
+        if (currentStep >= steps.length) {
+          return;
+        }
+        
+        const step = steps[currentStep];
+        const increment = (step.target - progress) / 20;
+        
+        progress += increment;
+        
+        if (progress >= step.target - 0.5) {
+          progress = step.target;
+          currentStep++;
+          if (currentStep < steps.length) {
+            updateProgress(progress, steps[currentStep].text);
+          } else {
+            updateProgress(progress, step.text);
+          }
+        } else {
+          updateProgress(progress);
+        }
+      }, 200);
+    }
+
+    function stopProgress(success = true) {
+      if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+      }
+      
+      if (success) {
+        updateProgress(100, '完了しました！');
+        setTimeout(() => {
+          const progressContainer = document.getElementById('progressContainer');
+          progressContainer.classList.remove('show');
+        }, 1500);
+      } else {
+        const progressContainer = document.getElementById('progressContainer');
+        progressContainer.classList.remove('show');
+      }
+    }
+
     async function handleSubmit() {
       const fileInput = document.getElementById('videoInput');
       const submitBtn = document.getElementById('submitBtn');
@@ -235,11 +348,13 @@
       }
 
       submitBtn.disabled = true;
-      status.textContent = '抽出中 / 生成中...';
+      status.textContent = '';
       error.classList.remove('show');
       previewSection.classList.remove('show');
       thumbnails.innerHTML = '';
       markdownPreview.innerHTML = '';
+
+      startFakeProgress();
 
       const formData = new FormData();
       formData.append('file', fileInput.files[0]);
@@ -257,6 +372,7 @@
 
         const data = await response.json();
 
+        stopProgress(true);
         status.textContent = '完了';
         
         data.images.forEach((imagePath, index) => {
@@ -278,6 +394,7 @@
 
         submitBtn.disabled = false;
       } catch (err) {
+        stopProgress(false);
         showError(err.message || '変換に失敗しました。動画を短くして再実行してください。');
         submitBtn.disabled = false;
         status.textContent = '';
