@@ -40,9 +40,8 @@ export async function generateMarkdown(frames, language = '日本語') {
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-4.1',
       messages,
-      max_tokens: 2000,
     });
 
     const apiDuration = Date.now() - apiStartTime;
