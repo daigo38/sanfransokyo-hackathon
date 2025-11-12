@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video to Manual Generator</title>
+  <title>ManualGen AI - 作業マニュアル自動生成</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⚡</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
@@ -13,36 +18,62 @@
   <div class="app-layout">
     <div class="sidebar" id="sessionSidebar">
       <div class="sidebar-header">
-        <h2>Session List</h2>
+        <i class="fas fa-history"></i>
+        <h2>History</h2>
       </div>
       <div class="session-list"></div>
     </div>
 
     <div class="main-content">
       <div class="container">
-        <h1>Video to Manual Generator</h1>
+        <div class="header-section">
+          <div class="brand-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h1>ManualGen AI</h1>
+          <p class="subtitle">Transform your work videos into professional manuals with AI</p>
+        </div>
 
         <div class="upload-section">
-          <div class="file-input-wrapper">
-            <input type="file" id="videoInput" accept="video/*">
+          <div class="upload-card">
+            <div class="file-input-wrapper">
+              <label for="videoInput" class="file-label">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Drop your video here or click to browse</span>
+              </label>
+              <input type="file" id="videoInput" accept="video/*">
+              <div id="fileName" class="file-name"></div>
+            </div>
           </div>
-          <div class="language-select-wrapper">
-            <label for="languageSelect">Output Language:</label>
-            <select id="languageSelect">
-              <option value="English" selected>English</option>
-              <option value="日本語">日本語</option>
-              <option value="中文">中文</option>
-              <option value="한국어">한국어</option>
-              <option value="Español">Español</option>
-              <option value="Français">Français</option>
-              <option value="Deutsch">Deutsch</option>
-            </select>
+          
+          <div class="language-card">
+            <div class="language-select-wrapper">
+              <label for="languageSelect">Output Language</label>
+              <select id="languageSelect">
+                <option value="日本語" selected>日本語 Japanese</option>
+                <option value="English">English</option>
+                <option value="中文">中文 Chinese</option>
+                <option value="한국어">한국어 Korean</option>
+                <option value="Español">Español Spanish</option>
+                <option value="Français">Français French</option>
+                <option value="Deutsch">Deutsch German</option>
+              </select>
+            </div>
           </div>
-          <button id="submitBtn">Submit</button>
+
+          <button id="submitBtn" class="submit-btn">
+            <span>Generate Manual</span>
+            <i class="fas fa-sparkles"></i>
+          </button>
+          
           <div class="status" id="status"></div>
           <div class="progress-container" id="progressContainer">
+            <div class="progress-header">
+              <span>Processing</span>
+              <span class="progress-percentage" id="progressPercentage">0%</span>
+            </div>
             <div class="progress-bar-wrapper">
-              <div class="progress-bar" id="progressBar">0%</div>
+              <div class="progress-bar" id="progressBar"></div>
             </div>
             <div class="progress-text" id="progressText">Analyzing video...</div>
           </div>
@@ -50,9 +81,16 @@
         </div>
 
         <div class="preview-section" id="previewSection">
+          <div class="completion-banner">
+            <i class="fas fa-check-circle"></i>
+            <span>Manual Generated Successfully</span>
+          </div>
           <div class="preview-container">
             <div class="preview-header">
-              <button id="downloadPdfBtn" class="download-btn">Download PDF</button>
+              <button id="downloadPdfBtn" class="download-btn">
+                <i class="fas fa-download"></i>
+                Download PDF
+              </button>
             </div>
             <div class="thumbnails" id="thumbnails"></div>
             <div class="markdown-preview" id="markdownPreview"></div>

@@ -4,6 +4,22 @@ class UploadSection {
     this.submitBtn = document.getElementById(submitBtnId);
     this.status = document.getElementById(statusId);
     this.languageSelect = document.getElementById(languageSelectId);
+    this.fileNameDisplay = document.getElementById('fileName');
+    
+    this.initEventListeners();
+  }
+
+  initEventListeners() {
+    if (this.fileInput) {
+      this.fileInput.addEventListener('change', () => this.handleFileChange());
+    }
+  }
+
+  handleFileChange() {
+    const file = this.getFile();
+    if (file && this.fileNameDisplay) {
+      this.fileNameDisplay.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success-green); margin-right: 8px;"></i>${file.name}`;
+    }
   }
 
   getFile() {
@@ -11,7 +27,7 @@ class UploadSection {
   }
 
   getLanguage() {
-    return this.languageSelect?.value || 'English';
+    return this.languageSelect?.value || '日本語';
   }
 
   hasFile() {
@@ -21,6 +37,11 @@ class UploadSection {
   setLoading(loading) {
     if (this.submitBtn) {
       this.submitBtn.disabled = loading;
+      if (loading) {
+        this.submitBtn.innerHTML = '<span>Processing...</span>';
+      } else {
+        this.submitBtn.innerHTML = '<span>Generate Manual</span><i class="fas fa-sparkles"></i>';
+      }
     }
     
     if (this.status) {

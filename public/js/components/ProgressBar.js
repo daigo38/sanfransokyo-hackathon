@@ -10,7 +10,11 @@ class ProgressBar {
   update(percent, message) {
     if (this.bar) {
       this.bar.style.width = percent + '%';
-      this.bar.textContent = Math.floor(percent) + '%';
+    }
+    
+    const percentageElement = document.getElementById('progressPercentage');
+    if (percentageElement) {
+      percentageElement.textContent = Math.floor(percent) + '%';
     }
     
     if (message && this.text) {
@@ -30,7 +34,7 @@ class ProgressBar {
       { target: 20, text: 'Analyzing video...' },
       { target: 45, text: 'Extracting frames...' },
       { target: 70, text: 'Generating manual...' },
-      { target: 90, text: 'Finishing...' }
+      { target: 90, text: 'Finalizing...' }
     ];
     
     let currentStep = 0;

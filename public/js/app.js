@@ -53,12 +53,12 @@ class App {
     this.uploadSection.setLoading(false);
     this.previewSection.render(data);
     this.sessionSidebar.refresh();
-    this.toast.show(`Saved: export/${data.sessionId}/`);
+    this.toast.show(`Saved to: export/${data.sessionId}/`);
   }
 
   handleError(err) {
     this.uploadSection.setLoading(false);
-    const errorMessage = err.message || 'Conversion failed. Please try again with a shorter video.';
+    const errorMessage = err.message || 'Failed to convert. Please try again with a shorter video.';
     this.errorHandler.show(errorMessage);
   }
 }

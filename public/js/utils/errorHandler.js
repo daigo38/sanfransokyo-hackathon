@@ -6,7 +6,7 @@ class ErrorHandler {
   show(message) {
     if (!this.element) return;
     
-    this.element.textContent = message;
+    this.element.innerHTML = `<i class="fas fa-exclamation-circle"></i>${message}`;
     this.element.classList.add('show');
   }
 
