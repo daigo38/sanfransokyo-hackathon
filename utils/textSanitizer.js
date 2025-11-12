@@ -1,7 +1,7 @@
 /**
- * AIが生成したテキストから先頭と末尾の```マークダウンブロック記号を削除する
- * @param {string} text - 処理対象のテキスト
- * @returns {string} - 処理後のテキスト
+ * Removes markdown code block delimiters (```) from the beginning and end of AI-generated text
+ * @param {string} text - Text to process
+ * @returns {string} - Processed text
  */
 export function removeMarkdownCodeBlockDelimiters(text) {
   if (!text || typeof text !== 'string') {
@@ -10,24 +10,24 @@ export function removeMarkdownCodeBlockDelimiters(text) {
 
   let processed = text.trim();
 
-  // 先頭が```で始まる場合（```markdownや```mdなどの言語指定も含む）
+  // If it starts with ``` (including language specifiers like ```markdown or ```md)
   if (processed.startsWith('```')) {
     const firstNewlineIndex = processed.indexOf('\n');
     if (firstNewlineIndex !== -1) {
       processed = processed.substring(firstNewlineIndex + 1);
     } else {
-      // 改行がない場合は```だけを削除
+      // If there's no newline, just remove the ```
       processed = processed.replace(/^```[a-z]*\s*/, '');
     }
   }
 
-  // 末尾が```で終わる場合
+  // If it ends with ```
   if (processed.endsWith('```')) {
     const lastNewlineIndex = processed.lastIndexOf('\n');
     if (lastNewlineIndex !== -1) {
       processed = processed.substring(0, lastNewlineIndex);
     } else {
-      // 改行がない場合は```だけを削除
+      // If there's no newline, just remove the ```
       processed = processed.replace(/\s*```$/, '');
     }
   }
@@ -36,13 +36,13 @@ export function removeMarkdownCodeBlockDelimiters(text) {
 }
 
 /**
- * Markdown内の相対画像パスをセッション固有の絶対パスに書き換える
- * - 画像記法: ![alt](./mm-ss.jpg) または ![alt](mm-ss.jpg) → ![alt](/export/{sessionId}/images/mm-ss.jpg)
- * - HTML記法: <img src="./mm-ss.jpg"> → <img src="/export/{sessionId}/images/mm-ss.jpg">
- * - mm-ss形式（例: 00-00.jpg）の画像パスを全て置換
- * @param {string} markdown - 変換対象のMarkdown文字列
- * @param {string} sessionId - セッションID
- * @returns {string} - 変換後のMarkdown
+ * Rewrites relative image paths in Markdown to session-specific absolute paths
+ * - Image syntax: ![alt](./mm-ss.jpg) or ![alt](mm-ss.jpg) → ![alt](/export/{sessionId}/images/mm-ss.jpg)
+ * - HTML syntax: <img src="./mm-ss.jpg"> → <img src="/export/{sessionId}/images/mm-ss.jpg">
+ * - Replaces all image paths in mm-ss format (e.g., 00-00.jpg)
+ * @param {string} markdown - Markdown string to convert
+ * @param {string} sessionId - Session ID
+ * @returns {string} - Converted Markdown
  */
 export function rewriteRelativeImagePaths(markdown, sessionId) {
   if (!markdown || typeof markdown !== 'string' || !sessionId) {
@@ -53,14 +53,14 @@ export function rewriteRelativeImagePaths(markdown, sessionId) {
 
   let result = markdown;
 
-  // Markdown画像・リンク: ![...](./mm-ss.jpg) または ![...](mm-ss.jpg) の形式を検出
-  // mm-ss形式: 2桁-2桁のパターン（例: 00-00.jpg）
+  // Markdown images/links: Detect ![...](./mm-ss.jpg) or ![...](mm-ss.jpg) format
+  // mm-ss format: 2-digit-2-digit pattern (e.g., 00-00.jpg)
   result = result.replace(
     /(!?\[[^\]]*\]\()(\.?\/?)(\d{2}-\d{2}\.[a-zA-Z]+)(\))/g,
     (_m, p1, p2, filename, p4) => `${p1}${exportPrefix}${filename}${p4}`
   );
 
-  // HTML imgタグ: <img src="./mm-ss.jpg"> または <img src="mm-ss.jpg"> の形式を検出
+  // HTML img tags: Detect <img src="./mm-ss.jpg"> or <img src="mm-ss.jpg"> format
   result = result.replace(
     /(<img\b[^>]*\bsrc=["'])(\.?\/?)(\d{2}-\d{2}\.[a-zA-Z]+)(["'][^>]*>)/gi,
     (_m, p1, p2, filename, p4) => `${p1}${exportPrefix}${filename}${p4}`
@@ -68,4 +68,3 @@ export function rewriteRelativeImagePaths(markdown, sessionId) {
 
   return result;
 }
-

@@ -1,65 +1,64 @@
-export const MANUAL_GENERATION_PROMPT = `配電盤の電気工事作業の一部工程を説明する初心者向けのマークダウン資料を作成してください。与えられた5秒ごとのフレーム画像をもとに、各作業手順について、どのような材料をどのような工具を使い、どのように作業しているかを、職人初心者にも分かりやすく解説してください。
+export const MANUAL_GENERATION_PROMPT = `Create a beginner-friendly Markdown document explaining part of the electrical work process for a distribution panel. Based on the frame images provided every 5 seconds, explain each work step, including what materials and tools are being used and how the work is being performed, in a way that is easy for beginners to understand.
 
-追加要件:
-- 各ステップごとに、作業の流れやポイントを初心者向けの言葉で丁寧に説明してください。
-- 代表的な手順ごとに画面左下のタイムスタンプを参照し、そのファイル名（例: 00-01.jpg）で画像をマークダウン内に**必ず埋め込んでください**（\`![](./00-01.jpg)\`）。画像は必ず表示されるように記載してください。
-- どの材料や工具を使っているか、それをどう使っているのかも明示し、なぜその使い方になるのかまで説明してください。
-- 画像の分析から必ず推論し、手順や使われている材料・工具についての解釈を根拠を持って記載してください。
-- 各ステップは「画像 → 状況解説 → 使用材料および工具 → 手順解説」の順で記述し、最後にまとめや注意点があれば追記してください。
+Additional Requirements:
+- For each step, please explain the workflow and key points in beginner-friendly language.
+- For representative steps, refer to the timestamp in the bottom-left corner of the screen and **always embed** the image in Markdown using its filename (e.g., \`![](./00-01.jpg)\`). Make sure images are always displayed.
+- Clearly state what materials and tools are being used, how they are being used, and explain why that usage is appropriate.
+- Always infer from image analysis and document interpretations of procedures, materials, and tools used with supporting evidence.
+- For each step, write in the order: "Image → Situation Explanation → Materials and Tools Used → Procedure Explanation", and add a summary or notes if applicable.
 
-# ステップ
+# Steps
 
-1. すべての画像を確認し、主要な作業の流れを抑えて代表的なコマを選定します。
-2. 各選定した画像（タイムスタンプ付きファイル名）ごとに以下を行います：
-   - 画像を**必ず**マークダウンで埋め込み（例: \`![](./00-01.jpg)\` ※必ずこの形式で明記）
-   - その画像に対応した作業内容・現場の状況を説明
-   - 使用する（もしくはしている）材料・工具の名称と用途を解説
-   - その画像で考えられる具体的手順や注意点を、初心者目線で説明
-3. 全体の作業の流れが時系列で分かるようにまとめます。
-4. 最後に総まとめや安全上の注意点などがあれば記載します。
+1. Review all images and identify the main workflow, then select representative frames.
+2. For each selected image (with timestamp filename), perform the following:
+   - **Always** embed the image in Markdown (e.g., \`![](./00-01.jpg)\` ※ must be in this format)
+   - Explain the work content and site situation corresponding to that image
+   - Explain the names and purposes of materials and tools being used (or used)
+   - Explain specific procedures and notes that can be inferred from that image, from a beginner's perspective
+3. Summarize the overall workflow in chronological order.
+4. Finally, include a summary or safety notes if applicable.
 
-# 出力フォーマット
+# Output Format
 
-- マークダウン形式のドキュメント
-- 各作業ステップごとに画像（例: \`![](./00-01.jpg)\`）、その説明、使用材料・工具、手順・注意点を記載
-- 文章は初心者向けに分かりやすく簡潔に
-- 手順ごとに小見出し（例: \`## ステップ1: [作業内容]\`）を使用
+- Markdown format document
+- For each work step, include image (e.g., \`![](./00-01.jpg)\`), explanation, materials and tools used, procedures and notes
+- Write in beginner-friendly, clear and concise language
+- Use subheadings for each step (e.g., \`## Step 1: [Work Content]\`)
 
-# 例
+# Example
 
 ---
-## ステップ1: 配電盤のカバーを外す
+## Step 1: Remove Distribution Panel Cover
 
 ![](./00-01.jpg)
 
-**状況解説**:  
-作業者が配電盤のカバーのネジを外しています。カバーは保護の役割があります。
+**Situation Explanation**:  
+The worker is removing screws from the distribution panel cover. The cover serves a protective function.
 
-**使用材料・工具**:  
-- プラスドライバー：カバーのネジを外すため。
-- 軍手：手を保護するため。
+**Materials and Tools Used**:  
+- Phillips screwdriver: To remove the cover screws.
+- Work gloves: To protect hands.
 
-**具体的手順**:  
-1. ドライバーでカバーのネジをすべて緩めます。
-2. ネジが外れたら、ゆっくりとカバーを取り外します。
-3. 取り外したカバーとネジはなくさないよう、まとめて保管しましょう。
+**Specific Procedure**:  
+1. Loosen all cover screws with a screwdriver.
+2. Once the screws are removed, slowly remove the cover.
+3. Store the removed cover and screws together so they don't get lost.
 
-**注意点**:  
-- 作業前に必ず電源を落とすこと。
-- ドライバーはネジ穴に合ったものを使用してください。
+**Notes**:  
+- Always turn off the power before starting work.
+- Use a screwdriver that matches the screw holes.
 
 ---
 
-（※実際の例では画像や説明の数や内容を作業全体に応じて適宜増やして構いません）
+(※ In actual examples, you may increase the number and content of images and explanations as appropriate for the overall work)
 
-# 注意事項
+# Notes
 
-- 画像分析に基づく手順推定は慎重かつ根拠も示すようにしてください。
-- 作業内容や用語は初心者目線を意識し、専門用語はなるべく補足説明を入れてください。
-- 作業全体をカバーできるよう代表的なステップを間引いても構いませんが、重要手順を見落とさないよう注意してください。
+- Be careful and provide evidence when inferring procedures from image analysis.
+- Keep terminology beginner-friendly, and add explanatory notes for technical terms whenever possible.
+- You may skip representative steps to cover the overall work, but be careful not to miss important procedures.
 
-【要約】  
-画像ごとにタイムスタンプ付きファイル名を使い、手順・材料・工具・理由を推理して初心者向けに分かりやすく解説したマークダウン資料を作成してください。とくに画像のマークダウン埋め込み部分（例: \`![](./00-01.jpg)\`）は強調して「必ず」記載し、出力に反映されるように気を付けてください。
+【Summary】  
+Create a beginner-friendly Markdown document that explains procedures, materials, tools, and reasons using timestamp filenames for each image. Pay special attention to the Markdown image embedding part (e.g., \`![](./00-01.jpg)\`) and make sure it is emphasized as "always" included and reflected in the output.
 
-出力言語: {language}`;
-
+Output language: {language}`;

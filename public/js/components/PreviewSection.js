@@ -79,7 +79,7 @@ class PreviewSection {
     try {
       const element = this.markdownPreview;
       
-      // 改ページ制御のためのスタイルを適用
+      // Apply styles for page break control
       const style = document.createElement('style');
       style.textContent = `
         .markdown-preview p,
@@ -146,7 +146,7 @@ class PreviewSection {
 
       await html2pdf().set(opt).from(element).save();
       
-      // スタイルを削除
+      // Remove styles
       document.head.removeChild(style);
     } catch (error) {
       console.error('PDF generation error:', error);

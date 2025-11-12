@@ -1,166 +1,165 @@
-# 動画からマニュアル生成アプリ
+# Video to Manual Generation App
 
-動画ファイルからタイムスタンプ焼き込み済みの画像群を生成し、AIを使用してMarkdownマニュアルを自動生成するWebアプリケーションです。
+A web application that generates timestamp-embedded image sequences from video files and automatically creates Markdown manuals using AI.
 
-## 機能
+## Features
 
-- **動画アップロード**: ローカルの動画ファイル（mp4など）をアップロード
-- **フレーム抽出**: 1fpsでフレームを抽出し、512px幅に自動リサイズ
-- **タイムスタンプ焼き込み**: 各画像の左下にMM:SS形式のタイムスタンプを自動で焼き込み
-- **AIマニュアル生成**: OpenAI APIを使用して、画像から手順書を自動生成
-- **プレビュー表示**: 生成されたMarkdownをブラウザ上でプレビュー表示
-- **ファイル出力**: `export/{sessionId}/` ディレクトリにMarkdownと画像を保存
+- **Video Upload**: Upload local video files (mp4, etc.)
+- **Frame Extraction**: Extract frames at 1fps and automatically resize to 512px width
+- **Timestamp Overlay**: Automatically overlay MM:SS format timestamps on the bottom-left of each image
+- **AI Manual Generation**: Automatically generate instruction manuals from images using OpenAI API
+- **Preview Display**: Preview generated Markdown in the browser
+- **File Export**: Save Markdown and images to `export/{sessionId}/` directory
 
-## 必要な環境
+## Requirements
 
-- Node.js 20.19.5以上
-- npm または yarn
-- OpenAI APIキー
+- Node.js 20.19.5 or higher
+- npm or yarn
+- OpenAI API key
 
-## インストール
+## Installation
 
 ```bash
 npm install
 ```
 
-## セットアップ
+## Setup
 
-1. プロジェクトルートに`.env`ファイルを作成：
+1. Create a `.env` file in the project root:
 
 ```bash
 OPENAI_API_KEY=your_openai_api_key_here
 PORT=3000
 ```
 
-2. `OPENAI_API_KEY`にOpenAI APIキーを設定してください。
+2. Set your OpenAI API key in `OPENAI_API_KEY`.
 
-## 使い方
+## Usage
 
-1. サーバーを起動：
+1. Start the server:
 
 ```bash
 npm start
 ```
 
-開発モード（ファイル変更を自動検知）：
+Development mode (auto-reload on file changes):
 
 ```bash
 npm run dev
 ```
 
-2. ブラウザで `http://localhost:3000` にアクセス
+2. Access `http://localhost:3000` in your browser
 
-3. 動画ファイルを選択して「Submit」ボタンをクリック
+3. Select a video file and click the "Submit" button
 
-4. 処理が完了すると、右側に生成されたMarkdownマニュアルが表示されます
+4. Once processing is complete, the generated Markdown manual will be displayed on the right side
 
-5. 生成されたファイルは `export/{sessionId}/` ディレクトリに保存されます
+5. Generated files are saved in the `export/{sessionId}/` directory
 
-## 技術スタック
+## Tech Stack
 
-### バックエンド
-- **Node.js 20.19.5+**: ランタイム環境
-- **Express**: Webサーバーフレームワーク
-- **multer**: ファイルアップロード処理
-- **fluent-ffmpeg**: 動画処理（フレーム抽出）
-- **ffmpeg-static**: FFmpegの静的バイナリ（ローカルインストール不要）
-- **sharp**: 画像処理（タイムスタンプ焼き込み）
-- **OpenAI SDK**: AI API呼び出し
-- **dotenv**: 環境変数管理
+### Backend
+- **Node.js 20.19.5+**: Runtime environment
+- **Express**: Web server framework
+- **multer**: File upload handling
+- **fluent-ffmpeg**: Video processing (frame extraction)
+- **ffmpeg-static**: Static FFmpeg binary (no local installation required)
+- **sharp**: Image processing (timestamp overlay)
+- **OpenAI SDK**: AI API calls
+- **dotenv**: Environment variable management
 
-### フロントエンド
-- **HTML/CSS/JavaScript**: バニラJSで実装
-- **marked**: Markdownレンダリング
-- **DOMPurify**: XSS対策
+### Frontend
+- **HTML/CSS/JavaScript**: Implemented with vanilla JS
+- **marked**: Markdown rendering
+- **DOMPurify**: XSS protection
 
-## プロジェクト構造
+## Project Structure
 
 ```
 .
-├── server.js              # ExpressサーバーとAPIエンドポイント
+├── server.js              # Express server and API endpoints
 ├── public/
-│   └── index.html         # フロントエンドUI
-├── export/                # 生成されたファイルの出力先
+│   └── index.html         # Frontend UI
+├── export/                # Output directory for generated files
 │   └── {sessionId}/
-│       ├── images/        # タイムスタンプ焼き込み済み画像
-│       └── manual.md     # 生成されたMarkdownマニュアル
-├── uploads/               # アップロードされた動画の一時保存先
-├── .env                   # 環境変数（.gitignoreに含まれています）
+│       ├── images/        # Timestamp-embedded images
+│       └── manual.md     # Generated Markdown manual
+├── uploads/               # Temporary storage for uploaded videos
+├── .env                   # Environment variables (included in .gitignore)
 ├── package.json
 └── README.md
 ```
 
-## 処理フロー
+## Processing Flow
 
-1. **動画アップロード**: クライアントから動画ファイルを受信
-2. **セッション作成**: 一意のセッションIDを生成
-3. **フレーム抽出**: FFmpegで1fps、512px幅にリサイズしてフレームを抽出
-4. **タイムスタンプ焼き込み**: Sharpを使用して各画像にMM:SS形式のタイムスタンプを合成
-5. **AI処理**: 焼き込み済み画像をOpenAI APIに送信してMarkdownを生成
-6. **ファイル保存**: `export/{sessionId}/` にMarkdownと画像を保存
-7. **レスポンス返却**: 生成されたMarkdownと画像URLをクライアントに返却
+1. **Video Upload**: Receive video file from client
+2. **Session Creation**: Generate unique session ID
+3. **Frame Extraction**: Extract frames using FFmpeg at 1fps, resized to 512px width
+4. **Timestamp Overlay**: Composite MM:SS format timestamps onto each image using Sharp
+5. **AI Processing**: Send timestamp-embedded images to OpenAI API to generate Markdown
+6. **File Saving**: Save Markdown and images to `export/{sessionId}/`
+7. **Response**: Return generated Markdown and image URLs to client
 
-## 出力仕様
+## Output Specifications
 
-### ディレクトリ構造
+### Directory Structure
 
 ```
 export/{sessionId}/
 ├── images/
-│   ├── 00-00.jpg    # タイムスタンプ焼き込み済み（00:00）
-│   ├── 00-01.jpg    # タイムスタンプ焼き込み済み（00:01）
-│   ├── 00-15.jpg    # タイムスタンプ焼き込み済み（00:15）
+│   ├── 00-00.jpg    # Timestamp-embedded (00:00)
+│   ├── 00-01.jpg    # Timestamp-embedded (00:01)
+│   ├── 00-15.jpg    # Timestamp-embedded (00:15)
 │   └── ...
-└── manual.md        # Markdownマニュアル
+└── manual.md        # Markdown manual
 ```
 
-### 画像仕様
+### Image Specifications
 
-- **解像度**: 幅512px（アスペクト比維持）
-- **フレームレート**: 1fps
-- **フォーマット**: JPEG
-- **ファイル名**: mm-ss形式（例：`00-15.jpg`）
-- **タイムスタンプ**: 左下、白文字＋黒縁、MM:SS形式
+- **Resolution**: 512px width (aspect ratio maintained)
+- **Frame Rate**: 1fps
+- **Format**: JPEG
+- **Filename**: mm-ss format (e.g., `00-15.jpg`)
+- **Timestamp**: Bottom-left, white text with black outline, MM:SS format
 
-### Markdown仕様
+### Markdown Specifications
 
-- ステップ見出し（Step 1, Step 2, ...）
-- 各ステップに1-2枚の代表画像を埋め込み
-- 各ステップの開始〜終了時刻を記載
-- 画像は相対パスで参照（`images/00-15.jpg`、`images/00-30.jpg`など、ファイル名はmm-ss形式）
+- Step headings (Step 1, Step 2, ...)
+- Embed 1-2 representative images per step
+- Include start and end times for each step
+- Images referenced with relative paths (`images/00-15.jpg`, `images/00-30.jpg`, etc., filenames in mm-ss format)
 
 ## API
 
 ### POST /api/generate-manual-from-video
 
-動画ファイルをアップロードしてマニュアルを生成します。
+Upload a video file and generate a manual.
 
-**リクエスト**:
+**Request**:
 - Content-Type: `multipart/form-data`
-- Body: `file` (動画ファイル)
+- Body: `file` (video file)
 
-**レスポンス**:
+**Response**:
 ```json
 {
-  "markdown": "生成されたMarkdownテキスト",
+  "markdown": "Generated Markdown text",
   "images": ["images/00-00.jpg", "images/00-01.jpg", ...],
-  "sessionId": "セッションID"
+  "sessionId": "Session ID"
 }
 ```
 
-## エラー処理
+## Error Handling
 
-- 動画ファイルが選択されていない場合: 400エラー
-- APIキーが設定されていない場合: エラーメッセージを表示
-- 処理中にエラーが発生した場合: 500エラー、セッションディレクトリを自動削除
+- No video file selected: 400 error
+- API key not configured: Display error message
+- Error during processing: 500 error, session directory automatically deleted
 
-## 注意事項
+## Notes
 
-- 長い動画の場合、処理に時間がかかる場合があります
-- OpenAI APIの使用量に応じて費用が発生します
-- 生成されたファイルは `export/` ディレクトリに保存されます（手動で削除してください）
+- Processing may take time for long videos
+- Costs are incurred based on OpenAI API usage
+- Generated files are saved in the `export/` directory (please delete manually)
 
-## ライセンス
+## License
 
 ISC
-

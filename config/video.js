@@ -1,6 +1,6 @@
 export const FRAME_EXTRACTION = {
-  // フレーム抽出の間隔（秒）。1 なら 1秒ごと、0.5 なら 0.5秒ごと（2fps）。
-  // 時間基準での設計にすることで、入力動画のフレームレート差異に影響されにくい。
+  // Frame extraction interval in seconds. 1 means every 1 second, 0.5 means every 0.5 seconds (2fps).
+  // Time-based design makes it less susceptible to input video frame rate differences.
   intervalSeconds: 5,
 };
 

@@ -49,7 +49,7 @@ router.get('/sessions', async (req, res) => {
   } catch (error) {
     console.error('Error fetching sessions:', error);
     res.status(500).json({
-      error: 'セッション一覧の取得に失敗しました。',
+      error: 'Failed to retrieve session list.',
     });
   }
 });
@@ -76,7 +76,7 @@ router.get('/sessions/:sessionId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching session:', error);
     res.status(404).json({
-      error: 'セッションが見つかりませんでした。',
+      error: 'Session not found.',
     });
   }
 });
@@ -87,11 +87,11 @@ router.post('/generate-manual-from-video', upload.single('file'), async (req, re
   if (!req.file) {
     console.log('[Generation] Error: No video file selected');
     return res.status(400).json({
-      error: '動画ファイルが選択されていません。',
+      error: 'No video file selected.',
     });
   }
 
-  const language = req.body.language || '日本語';
+  const language = req.body.language || 'English';
   const sessionId = uuidv4();
   const exportDir = path.join(__dirname, '..', 'export', sessionId);
   const imagesDir = path.join(exportDir, 'images');
@@ -158,7 +158,7 @@ router.post('/generate-manual-from-video', upload.single('file'), async (req, re
     }
 
     res.status(500).json({
-      error: '変換に失敗しました。動画を短くして再実行してください。',
+      error: 'Conversion failed. Please try again with a shorter video.',
     });
   }
 });

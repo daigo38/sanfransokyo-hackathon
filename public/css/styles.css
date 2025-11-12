@@ -42,7 +42,7 @@ body {
   overflow: hidden;
 }
 
-/* サイドバー */
+/* Sidebar */
 .sidebar {
   width: 320px;
   background: var(--surface);
@@ -136,7 +136,7 @@ body {
   margin-bottom: 16px;
 }
 
-/* メインコンテンツ */
+/* Main Content */
 .main-content {
   flex: 1;
   overflow-y: auto;
@@ -149,7 +149,7 @@ body {
   margin: 0 auto;
 }
 
-/* ヘッダーセクション */
+/* Header Section */
 .header-section {
   text-align: center;
   margin-bottom: 64px;
@@ -218,7 +218,7 @@ h1 {
   margin: 0 auto;
 }
 
-/* アップロードセクション */
+/* Upload Section */
 .upload-section {
   margin-bottom: 48px;
   display: flex;
@@ -398,7 +398,7 @@ input[type="file"] {
   font-weight: 500;
 }
 
-/* プログレスバー */
+/* Progress Bar */
 .progress-container {
   margin-top: 32px;
   display: none;
@@ -484,7 +484,7 @@ input[type="file"] {
   font-weight: 500;
 }
 
-/* エラー表示 */
+/* Error Display */
 .error {
   margin-top: 24px;
   color: white;
@@ -514,7 +514,7 @@ input[type="file"] {
   font-size: 20px;
 }
 
-/* トースト通知 */
+/* Toast Notification */
 .toast {
   position: fixed;
   top: 32px;
@@ -553,7 +553,7 @@ input[type="file"] {
   font-size: 20px;
 }
 
-/* 完了バナー */
+/* Completion Banner */
 .completion-banner {
   background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
   color: white;
@@ -589,7 +589,7 @@ input[type="file"] {
   font-size: 24px;
 }
 
-/* プレビューセクション */
+/* Preview Section */
 .preview-section {
   display: none;
   margin-top: 48px;
@@ -765,7 +765,7 @@ input[type="file"] {
   border: none;
 }
 
-/* PDF生成時の改ページ制御 */
+/* Page Break Control for PDF Generation */
 .markdown-preview p,
 .markdown-preview li,
 .markdown-preview img,
@@ -835,7 +835,7 @@ input[type="file"] {
   background: var(--background);
 }
 
-/* スクロールバーのカスタマイズ */
+/* Scrollbar Customization */
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
@@ -855,7 +855,7 @@ input[type="file"] {
   background: var(--text-secondary);
 }
 
-/* レスポンシブデザイン */
+/* Responsive Design */
 @media (max-width: 1024px) {
   .preview-container {
     grid-template-columns: 1fr;

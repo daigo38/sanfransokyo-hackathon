@@ -1,7 +1,7 @@
 {
   "name": "video-to-manual",
   "version": "1.0.0",
-  "description": "動画からタイムスタンプ焼き込み画像とMarkdownマニュアルを生成するアプリ",
+  "description": "App that generates timestamp-embedded images and Markdown manuals from videos",
   "main": "server.js",
   "type": "module",
   "scripts": {

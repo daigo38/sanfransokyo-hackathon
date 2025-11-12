@@ -1,7 +1,7 @@
 import { openai } from '../config/openai.js';
 import { MANUAL_GENERATION_PROMPT } from '../prompts/manualGeneration.js';
 
-export async function generateMarkdown(frames, language = '日本語') {
+export async function generateMarkdown(frames, language = 'English') {
   console.log(`[Markdown Generation] Image encoding started: ${frames.length} images`);
   const encodeStartTime = Date.now();
   

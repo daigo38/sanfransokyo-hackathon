@@ -27,7 +27,7 @@ class UploadSection {
   }
 
   getLanguage() {
-    return this.languageSelect?.value || '日本語';
+    return this.languageSelect?.value || 'English';
   }
 
   hasFile() {
