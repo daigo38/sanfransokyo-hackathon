@@ -131,7 +131,7 @@ export/{sessionId}/
 
 ## API
 
-### POST /api/convert
+### POST /api/generate-manual-from-video
 
 動画ファイルをアップロードしてマニュアルを生成します。
 

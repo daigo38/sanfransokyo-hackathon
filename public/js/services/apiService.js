@@ -7,7 +7,7 @@ class ApiService {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`${this.baseUrl}/api/convert`, {
+    const response = await fetch(`${this.baseUrl}/api/generate-manual-from-video`, {
       method: 'POST',
       body: formData,
     });

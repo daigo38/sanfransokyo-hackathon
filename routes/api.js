@@ -81,7 +81,7 @@ router.get('/sessions/:sessionId', async (req, res) => {
   }
 });
 
-router.post('/convert', upload.single('file'), async (req, res) => {
+router.post('/generate-manual-from-video', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({
       error: '動画ファイルが選択されていません。',
